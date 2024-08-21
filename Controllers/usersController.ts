@@ -1,78 +1,84 @@
-const mongoose = require('mongoose');
-const User = require('../Models/userModels');
-const { phoneRegex, emailRegex, passwordRegex } = require('../utils/validationUtils');
-const { validate } = require('deep-email-validator');
+import { Request, Response, NextFunction } from 'express';
+import User from '../Models/userModels';
+import { phoneRegex, passwordRegex } from '../utils/validationUtils';
+import { validate } from 'deep-email-validator';
 
-exports.createUser = async (req, res, next) => {
+export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { userName, email, contactNumber, password, confirmPassword } = req.body;
 
         // Check for missing required fields
         if (!userName || !email || !contactNumber || !password || !confirmPassword) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Please input all required details.'
                 ],
             });
+            return;
         }
 
         // Check if the email is already registered
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Email already registered. Please choose a different email.'
                 ],
             });
+            return;
         }
 
         // Validate the email
         const validationResult = await validate(email);
         if (!validationResult.valid) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Invalid email format'
                 ],
             });
+            return;
         }
 
         // Validate phone number (10 digits)
         if (!phoneRegex.test(contactNumber)) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Contact number must be exactly 10 digits.'
                 ],
             });
+            return;
         }
 
         // Validate password strength
         if (!passwordRegex.test(password)) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.'
                 ],
             });
+            return;
         }
 
         // Check if passwords match
-        if (password != confirmPassword) {
-            return res.status(400).json({
+        if (password !== confirmPassword) {
+            res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
                     'Password Mismatch'
                 ],
             });
+            return;
         }
 
         // Create a new user

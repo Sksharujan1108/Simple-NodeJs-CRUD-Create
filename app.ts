@@ -1,13 +1,13 @@
-const express = require('express');
-const connectDatabase = require('./DataBase/database'); // Import the database connection
+import express, { Express } from 'express';
+import connectDatabase from './DataBase/database'; // Import the database connection
 
-const app = express();
+const app: Express = express();
 
 // Middleware, routes, and other configurations
 app.use(express.json()); // Example middleware
 
 // Import the router
-const createUserRoutes = require('./Routes/userRoutes');
+import createUserRoutes from './Routes/userRoutes';
 
 // Use the routes
 app.use('/api/users', createUserRoutes); // Prefixing routes with /api/users
@@ -21,4 +21,4 @@ connectDatabase().then(() => {
 });
 
 // Export the app instance
-module.exports = app;
+export default app;
