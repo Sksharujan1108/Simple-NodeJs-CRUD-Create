@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModels';
 import { phoneRegex, passwordRegex } from '../utils/validationUtils';
 import { validate } from 'deep-email-validator';
+import { ICreateUserRequestBody, ICreateUserSuccessResponse, ICreateUserErrorResponse } from '../types/controllerTypes/userControllerTypes';
 
-export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Response<ICreateUserSuccessResponse | ICreateUserErrorResponse>, next: NextFunction): Promise<void> => {
     try {
         const { userName, email, contactNumber, password, confirmPassword } = req.body;
 

@@ -1,16 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
-
-// Define an interface for the User document
-interface UserSchemaType {
-  userName: string;
-  email: string;
-  contactNumber: string;
-  password: string;
-  confirmPassword: string;
-}
+import { IUser } from '../types/modelsTypes/userModelsTypes'
 
 // Define the User schema with type annotations
-const UserSchema: Schema = new Schema({
+const UserSchema: Schema<IUser> = new Schema({
   userName: {
     type: String,
     required: true,
@@ -38,5 +30,5 @@ const UserSchema: Schema = new Schema({
 });
 
 // Create and export the User model
-const User = mongoose.model<UserSchemaType>('User', UserSchema);
+const User = mongoose.model<IUser>('User', UserSchema);
 export default User;
