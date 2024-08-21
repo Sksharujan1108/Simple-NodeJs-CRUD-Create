@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '../Models/userModels';
+import User from '../models/userModels';
 import { phoneRegex, passwordRegex } from '../utils/validationUtils';
 import { validate } from 'deep-email-validator';
 

@@ -1,5 +1,5 @@
 import express, { Express } from 'express';
-import connectDatabase from './DataBase/database'; // Import the database connection
+import connectDatabase from './src/dataBase/database'; // Import the database connection
 
 const app: Express = express();
 
@@ -7,7 +7,7 @@ const app: Express = express();
 app.use(express.json()); // Example middleware
 
 // Import the router
-import createUserRoutes from './Routes/userRoutes';
+import createUserRoutes from './src/routes/userRoutes';
 
 // Use the routes
 app.use('/api/users', createUserRoutes); // Prefixing routes with /api/users
