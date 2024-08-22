@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/userModels';
-import { phoneRegex, passwordRegex } from '../utils/validationUtils';
+import { phoneRegex, passwordRegex, emailRegex } from '../utils/validationUtils';
 import { validate } from 'deep-email-validator';
 import { ICreateUserRequestBody, ICreateUserSuccessResponse, ICreateUserErrorResponse } from '../types/controllerTypes/userControllerTypes';
 
@@ -34,13 +34,13 @@ export const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, r
         }
 
         // Validate the email
-        const validationResult = await validate(email);
-        if (!validationResult.valid) {
+        // const validationResult = await validate(email);
+        if (!emailRegex.test(email)) {
             res.status(400).json({
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
-                    'Invalid email format'
+                    'Invalid email format. Please provide a valid email address.'
                 ],
             });
             return;
