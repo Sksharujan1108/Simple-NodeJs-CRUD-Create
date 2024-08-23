@@ -7,7 +7,12 @@ const app: Express = express();
 app.use(express.json()); // Example middleware
 
 // Import the router
-import createUserRoutes from './src/routes/userRoutes';
+import createUserRoutes from './src/routes/auth/userRoutes';
+
+// Gmail
+import sentOtpGmail from './src/routes/auth/otpRoutes';
+
+app.use('/api/sentOtp', sentOtpGmail); // Prefixing routes with /api/users
 
 // Use the routes
 app.use('/api/users', createUserRoutes); // Prefixing routes with /api/users

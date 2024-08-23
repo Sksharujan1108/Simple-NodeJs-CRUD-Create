@@ -27,6 +27,11 @@ const UserSchema: Schema<IUser> = new Schema({
     required: true,
     default: null,
   },
+  // otp: {
+  //   type: String,
+  //   required: false, // Optional: Only required when verifying OTP
+  //   default: null,
+  // },
 });
 
 // Create and export the User model

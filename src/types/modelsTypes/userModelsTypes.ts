@@ -7,4 +7,5 @@ export interface IUser extends Document {
   contactNumber: string;
   password: string;
   confirmPassword: string;
+  // otp: string;
 }

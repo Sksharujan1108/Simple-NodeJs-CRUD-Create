@@ -3,8 +3,10 @@ import User from '../models/userModels';
 import { phoneRegex, passwordRegex, emailRegex } from '../utils/validationUtils';
 import { validate } from 'deep-email-validator';
 import { ICreateUserRequestBody, ICreateUserSuccessResponse, ICreateUserErrorResponse } from '../types/controllerTypes/userControllerType';
+import nodemailer from 'nodemailer'; // Import nodemailer
+import crypto from 'crypto'; // For generating OTP
 
-export const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Response<ICreateUserSuccessResponse | ICreateUserErrorResponse>, next: NextFunction): Promise<void> => {
+const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Response<ICreateUserSuccessResponse | ICreateUserErrorResponse>, next: NextFunction): Promise<void> => {
     try {
         const { userName, email, contactNumber, password, confirmPassword } = req.body;
 
@@ -112,3 +114,5 @@ export const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, r
         next(error); // Pass the error to the next middleware
     }
 };
+
+export default createUser;
