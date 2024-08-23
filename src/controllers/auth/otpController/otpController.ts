@@ -57,8 +57,8 @@ export const CheckGmail = async (
       return;
     }
 
-    // Generate a random OTP using Math.random()
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // Generate a random OTP
+    const otp = crypto.randomInt(100000, 999999).toString();
 
     // Save the OTP to the database
     await Gmail.findOneAndUpdate({ email }, { otp }, { upsert: true });
