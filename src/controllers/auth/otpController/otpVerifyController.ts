@@ -39,6 +39,10 @@ export const verifyOtp = async (
       return;
     }
 
+    // Mark the email as verified in the database
+    otpEntry.isVerified = true;
+    await otpEntry.save();
+
     res.status(201).json({
       status: 201,
       message: 'Email verified successfully',

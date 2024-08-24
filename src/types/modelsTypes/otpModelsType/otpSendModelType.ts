@@ -4,4 +4,6 @@ import { Document } from 'mongoose';
 export interface IOtp extends Document {
   email: string;
   otp: string;
+  isVerified: boolean;
+  createdAt: Date;
 }

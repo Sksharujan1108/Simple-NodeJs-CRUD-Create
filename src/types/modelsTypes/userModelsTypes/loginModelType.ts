@@ -1,11 +1,9 @@
 import { Document } from 'mongoose';
 
 // Define the interface for the User document
-export interface IUser extends Document {
-  userName: string;
+export interface ILoginUser extends Document {
   email: string;
-  contactNumber: string;
   password: string;
-  confirmPassword: string;
+  refreshToken?: string; // Optional field for refresh tokens
   // otp: string;
 }

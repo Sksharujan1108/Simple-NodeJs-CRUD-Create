@@ -35,10 +35,13 @@ export const sendOtpGmail = async (
 
     const result = await otpSendVerifyGmail.findOneAndUpdate(
       { email },
-      { otp },
+      { otp, isVerified: false, createdAt: new Date() },
       { upsert: true, new: true }
     );
     console.log('user Result', result);
+
+     // Send OTP to the email (simulated for now)
+     console.log(`OTP sent to ${email}: ${otp}`);
     
 
     await mailConfig(email, otp);

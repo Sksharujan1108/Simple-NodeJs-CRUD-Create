@@ -1,8 +1,8 @@
 import mongoose, { Schema } from 'mongoose';
-import { IUser } from '../types/modelsTypes/userModelsTypes'
+import { IRegisterUser } from '../../../types/modelsTypes/userModelsTypes/registerModelsTypes'
 
 // Define the User schema with type annotations
-const UserSchema: Schema<IUser> = new Schema({
+const registerUserSchema: Schema<IRegisterUser> = new Schema({
   userName: {
     type: String,
     required: true,
@@ -22,18 +22,9 @@ const UserSchema: Schema<IUser> = new Schema({
     required: true,
     default: null,
   },
-  confirmPassword: {
-    type: String,
-    required: true,
-    default: null,
-  },
-  // otp: {
-  //   type: String,
-  //   required: false, // Optional: Only required when verifying OTP
-  //   default: null,
-  // },
+  refreshTokens: [String], // Adjust to your needs
 });
 
 // Create and export the User model
-const User = mongoose.model<IUser>('User', UserSchema);
-export default User;
+const registerUser = mongoose.model<IRegisterUser>('registerUser', registerUserSchema);
+export default registerUser;

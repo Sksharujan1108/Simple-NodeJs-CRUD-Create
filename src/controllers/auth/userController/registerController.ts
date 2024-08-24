@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '../models/userModels';
-import { phoneRegex, passwordRegex, emailRegex } from '../utils/validationUtils';
+import { phoneRegex, passwordRegex, emailRegex } from '../../../utils/validationUtils';
 import { validate } from 'deep-email-validator';
-import { ICreateUserRequestBody, ICreateUserSuccessResponse, ICreateUserErrorResponse } from '../types/controllerTypes/userControllerType';
-import nodemailer from 'nodemailer'; // Import nodemailer
-import crypto from 'crypto'; // For generating OTP
+import bcrypt from 'bcrypt';
+import { IRegisterCreateUserRequestBody, IRegisterCreateUserSuccessResponse, IRegisterCreateUserErrorResponse } from '../../../types/controllerTypes/userControllerType/registerControllerType';
+import registerUser from '../../../models/auth/userModel/registerModels';
+import otpSendVerifyGmail from '../../../models/auth/otpModel/otpModels';
 
-const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Response<ICreateUserSuccessResponse | ICreateUserErrorResponse>, next: NextFunction): Promise<void> => {
+const registerUserCreate = async (req: Request<{}, {}, IRegisterCreateUserRequestBody>, res: Response<IRegisterCreateUserSuccessResponse | IRegisterCreateUserErrorResponse>, next: NextFunction): Promise<void> => {
     try {
         const { userName, email, contactNumber, password, confirmPassword } = req.body;
 
@@ -22,8 +22,19 @@ const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Res
             return;
         }
 
+        // Check if email is verified
+        const otpRecord = await otpSendVerifyGmail.findOne({ email });
+        if (!otpRecord || !otpRecord.isVerified) {
+            res.status(400).json({
+              status: 400,
+              message: 'Bad Request',
+              errorDescription: ['Email is not verified. Please verify your email before registering.'],
+            });
+            return;
+          }
+
         // Check if the email is already registered
-        const existingUser = await User.findOne({ email });
+        const existingUser = await registerUser.findOne({ email });
         if (existingUser) {
             res.status(400).json({
                 status: 400,
@@ -66,7 +77,7 @@ const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Res
                 status: 400,
                 message: 'Bad Request',
                 errorDescription: [
-                    'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.'
+                    'Password must be at least 10 characters long and include uppercase letters, lowercase letters, numbers, and special characters.'
                 ],
             });
             return;
@@ -84,8 +95,16 @@ const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Res
             return;
         }
 
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         // Create a new user
-        const newUser = new User({ userName, email, contactNumber, password, confirmPassword });
+        const newUser = new registerUser({ 
+            userName, 
+            email, 
+            contactNumber, 
+            password: hashedPassword,
+        });
 
         // Save the user to the database
         await newUser.save();
@@ -115,4 +134,4 @@ const createUser = async (req: Request<{}, {}, ICreateUserRequestBody>, res: Res
     }
 };
 
-export default createUser;
+export default registerUserCreate;
