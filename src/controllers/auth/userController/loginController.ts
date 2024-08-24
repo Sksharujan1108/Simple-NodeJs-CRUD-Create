@@ -41,7 +41,7 @@ const loginController = async  (req: Request<{}, {}, ILoginRequestBody>, res: Re
         }
 
         // Generate JWT token
-        const jwtToken = jwt.sign(
+        const accessToken = jwt.sign(
             { userId: checkUser._id, email: checkUser.email },
             process.env.JWT_SECRET as string,
             { expiresIn: process.env.JWT_EXPIRES_IN }
@@ -59,13 +59,13 @@ const loginController = async  (req: Request<{}, {}, ILoginRequestBody>, res: Re
         checkUser.refreshTokens.push(refreshToken);
         await checkUser.save();
 
-        
+
         // Send response with JWT token
         res.status(200).json({
             status: 200,
             message: 'Login successful',
             responseDto: { 
-                jwtToken, 
+                accessToken, 
                 refreshToken 
             }
         });

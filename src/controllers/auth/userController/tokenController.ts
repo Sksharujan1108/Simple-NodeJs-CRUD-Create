@@ -40,7 +40,7 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
         }
 
         // Generate new JWT and refresh tokens
-        const newJwtToken = jwt.sign(
+        const newAccessToken = jwt.sign(
             { userId: user._id, email: user.email },
             process.env.JWT_SECRET as string,
             { expiresIn: process.env.JWT_EXPIRES_IN }
@@ -60,7 +60,7 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
         res.status(200).json({
             status: 200,
             message: 'Token refreshed successfully',
-            responseDto: { jwtToken: newJwtToken, refreshToken: newRefreshToken }
+            responseDto: { accessToken: newAccessToken, refreshToken: newRefreshToken }
         });
 
     } catch (error) {

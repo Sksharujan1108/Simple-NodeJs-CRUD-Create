@@ -9,7 +9,7 @@ export interface ILoginRequestBody {
     status: number;
     message: string;
     responseDto: {
-        jwtToken: string;
+        accessToken: string;
         refreshToken: string
     };
   }
