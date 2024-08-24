@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
 
 // Define the interface for the User document
-export interface IUser extends Document {
+export interface IRegisterUser extends Document {
   userName: string;
   email: string;
   contactNumber: string;

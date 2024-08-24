@@ -1,5 +1,5 @@
 // Define types for the request body
-export interface ICreateUserRequestBody {
+export interface IRegisterCreateUserRequestBody {
     userName: string;
     email: string;
     contactNumber: string;
@@ -8,7 +8,7 @@ export interface ICreateUserRequestBody {
   }
   
   // Define types for the response
-  export interface ICreateUserSuccessResponse {
+  export interface IRegisterCreateUserSuccessResponse {
     status: number;
     message: string;
     responseDto: {
@@ -18,7 +18,7 @@ export interface ICreateUserRequestBody {
     };
   }
   
-  export interface ICreateUserErrorResponse {
+  export interface IRegisterCreateUserErrorResponse {
     status: number;
     message: string;
     errorDescription: string[];
