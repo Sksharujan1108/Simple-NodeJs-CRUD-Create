@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { phoneRegex, passwordRegex, emailRegex } from '../../../utils/validationUtils';
 import { validate } from 'deep-email-validator';
 import bcrypt from 'bcrypt';
-import { IRegisterCreateUserRequestBody, IRegisterCreateUserSuccessResponse, IRegisterCreateUserErrorResponse } from '../../../types/controllerTypes/registerControllerType/registerControllerType';
-import registerUser from '../../../models/auth/registerModel/registerModels';
+import { IRegisterCreateUserRequestBody, IRegisterCreateUserSuccessResponse, IRegisterCreateUserErrorResponse } from '../../../types/controllerTypes/userControllerType/registerControllerType';
+import registerUser from '../../../models/auth/userModel/registerModels';
 import otpSendVerifyGmail from '../../../models/auth/otpModel/otpModels';
 
 const registerUserCreate = async (req: Request<{}, {}, IRegisterCreateUserRequestBody>, res: Response<IRegisterCreateUserSuccessResponse | IRegisterCreateUserErrorResponse>, next: NextFunction): Promise<void> => {
