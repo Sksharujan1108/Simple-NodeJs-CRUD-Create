@@ -1,29 +1,25 @@
 import express, { Express } from 'express';
 import connectDatabase from './src/dataBase/database'; // Import the database connection
+// Import the router
+import createUserRoutes from './src/routes/auth/authRoutes';
+import sentOtpGmail from './src/routes/auth/authRoutes';
+import verifyOtpGmail from './src/routes/auth/authRoutes'
 
 const app: Express = express();
 
 // Middleware, routes, and other configurations
 app.use(express.json()); // Example middleware
 
-// Import the router
-import createUserRoutes from './src/routes/auth/userRoutes';
+// Connect to the database
+connectDatabase()
 
-// Gmail
-import sentOtpGmail from './src/routes/auth/otpRoutes';
+app.use('/api/v1', sentOtpGmail); // Prefixing routes with /api/users
 
-app.use('/api/sentOtp', sentOtpGmail); // Prefixing routes with /api/users
+app.use('/api/v1', verifyOtpGmail); // Prefixing routes with /api/users
 
 // Use the routes
-app.use('/api/users', createUserRoutes); // Prefixing routes with /api/users
+app.use('/api/v1', createUserRoutes); // Prefixing routes with /api/users
 
-// Connect to the database
-connectDatabase().then(() => {
-  console.log('Database connected successfully');
-}).catch(err => {
-  console.error('Database connection:', err);
-  process.exit(1); // Exit process with failure
-});
 
 // Export the app instance
 export default app;

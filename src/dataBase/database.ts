@@ -19,9 +19,7 @@ console.log('MONGO_URI:', MONGO_URI);
 const connectDatabase = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGO_URI, {
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-      // useFindAndModify: false,
+      
     });
     console.log('Successfully connected to the User database');
   } catch (error) {

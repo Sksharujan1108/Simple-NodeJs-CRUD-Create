@@ -1,21 +1,22 @@
 import mongoose, { Schema } from 'mongoose';
-import { IGmail } from '../../../types/modelsTypes/otpModelsType/otpModelType';
+import { IOtp } from '../../../types/modelsTypes/otpModelsType/otpSendModelType';
 
-const checkGmailSchema: Schema = new Schema({
-    email: {
-        type: String,
-        required: true
-    },
-    otp: {
-        type: String,
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        expires: 60 * 5, // The document will be automatically deleted after 5 minutes of its creation time
-    },
-})
+const otpSchema: Schema = new Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  otp: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    expires: 60 * 5, // Document expires after 5 minutes
+  },
+});
 
-const Gmail =  mongoose.model<IGmail>('Gmail', checkGmailSchema)
-export default Gmail;
+const otpSendVerifyGmail = mongoose.model<IOtp>('otpSendGmail', otpSchema);
+export default otpSendVerifyGmail;
